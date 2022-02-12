@@ -1,23 +1,20 @@
 /* 
 > no initial value outside of a function
-> calculate with innerText
+> calculate with innerText and input
+> used fuction for reduce repeated code
 */
 const depositBtn = document.getElementById("deposit-btn");
 const withdrawBtn = document.getElementById("withdraw-btn");
-const balanceTotal = document.getElementById("balance-total");
 
 depositBtn.addEventListener("click", function () {
   // get deposit input
   const depositInput = getInputValue("deposit-input");
 
   // get and set deposit total
-  getAndSetInnerTextValue("deposit-total", depositInput);
+  updateTotalField("deposit-total", depositInput);
 
-  // set balance total
-  let balanceAmount = parseFloat(balanceTotal.innerText);
-  // let balanceAmount = getInnerTextValue(balanceTotal);
-  balanceAmount += depositInput;
-  balanceTotal.innerText = balanceAmount;
+  // update balance total
+  updateBalance(depositInput, true);
 });
 
 withdrawBtn.addEventListener("click", function () {
@@ -25,14 +22,13 @@ withdrawBtn.addEventListener("click", function () {
   const withdrawInput = getInputValue("withdraw-input");
 
   // get and set withdraw total
-  getAndSetInnerTextValue("withdraw-total", withdrawInput);
+  updateTotalField("withdraw-total", withdrawInput);
 
-  // set balance total
-  let balanceAmount = parseFloat(balanceTotal.innerText);
-  balanceAmount -= withdrawInput;
-  balanceTotal.innerText = balanceAmount;
+  // update balance total
+  updateBalance(withdrawInput, false);
 });
 
+// reuseable function for remove repeated code
 function getInputValue(inputId) {
   const inputField = document.getElementById(inputId);
   const newValue = parseFloat(inputField.value);
@@ -40,9 +36,20 @@ function getInputValue(inputId) {
   return newValue;
 }
 
-function getAndSetInnerTextValue(textId, inputId) {
+function updateTotalField(textId, inputId) {
   const textField = document.getElementById(textId);
   let textAmount = parseFloat(textField.innerText);
   textAmount += inputId;
-  return textField.innerText = textAmount;
+  return (textField.innerText = textAmount);
+}
+
+function updateBalance(updateAmount, isAdd) {
+  const balanceTotal = document.getElementById("balance-total");
+  let balanceAmount = parseFloat(balanceTotal.innerText);
+  if (isAdd == true) {
+    balanceAmount += updateAmount;
+  } else {
+    balanceAmount -= updateAmount;
+  }
+  balanceTotal.innerText = balanceAmount;
 }
