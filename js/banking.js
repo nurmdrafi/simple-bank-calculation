@@ -8,44 +8,41 @@ const balanceTotal = document.getElementById("balance-total");
 
 depositBtn.addEventListener("click", function () {
   // get deposit input
-  const depositInput = document.getElementById("deposit-input");
-  const depositInputValue = getInputValue(depositInput);
+  const depositInput = getInputValue("deposit-input");
 
-  // set deposit total
-  const depositTotal = document.getElementById("deposit-total");
-  let depositAmount = getInnerTextValue(depositTotal);
-  depositAmount += depositInputValue;
-  depositTotal.innerText = depositAmount;
+  // get and set deposit total
+  getAndSetInnerTextValue("deposit-total", depositInput);
 
   // set balance total
-  let balanceAmount = getInnerTextValue(balanceTotal);
-  balanceAmount += depositInputValue;
+  let balanceAmount = parseFloat(balanceTotal.innerText);
+  // let balanceAmount = getInnerTextValue(balanceTotal);
+  balanceAmount += depositInput;
   balanceTotal.innerText = balanceAmount;
 });
 
 withdrawBtn.addEventListener("click", function () {
   // get windraw input
-  const withdrawInput = document.getElementById("withdraw-input");
-  const withdrawInputValue = getInputValue(withdrawInput);
+  const withdrawInput = getInputValue("withdraw-input");
 
-  // set withdraw total
-  const withdrawTotal = document.getElementById("withdraw-total");
-  let withdrawAmount = getInnerTextValue(withdrawTotal);
-  withdrawAmount += withdrawInputValue;
-  withdrawTotal.innerHTML = withdrawAmount;
+  // get and set withdraw total
+  getAndSetInnerTextValue("withdraw-total", withdrawInput);
 
   // set balance total
-  let balanceAmount = getInnerTextValue(balanceTotal);
-  balanceAmount -= withdrawInputValue;
+  let balanceAmount = parseFloat(balanceTotal.innerText);
+  balanceAmount -= withdrawInput;
   balanceTotal.innerText = balanceAmount;
 });
 
-function getInputValue(id) {
-  const newValue = parseFloat(id.value);
-  id.value = "";
+function getInputValue(inputId) {
+  const inputField = document.getElementById(inputId);
+  const newValue = parseFloat(inputField.value);
+  inputField.value = "";
   return newValue;
 }
 
-function getInnerTextValue(id) {
-  return parseFloat(id.innerText);
+function getAndSetInnerTextValue(textId, inputId) {
+  const textField = document.getElementById(textId);
+  let textAmount = parseFloat(textField.innerText);
+  textAmount += inputId;
+  return textField.innerText = textAmount;
 }
